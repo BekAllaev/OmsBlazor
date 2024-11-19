@@ -132,3 +132,6 @@ public class OMSBlazorHttpApiHostModule : AbpModule
 {
 }
 ```
+
+# Deploy notes
+- When publicating newer version of backend you can have 403 error after the publication. In the Web Application Firewall(you will find it on the dashboard) change Web application firewall mode to Detection only
