@@ -213,6 +213,7 @@ public class OMSBlazorHttpApiHostModule : AbpModule
         //}
 
         app.UseCorrelationId();
+        app.MapAbpStaticAssets();
         app.UseStaticFiles();
         app.UseRouting();
         app.UseCors();

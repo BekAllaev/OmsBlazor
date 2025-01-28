@@ -44,6 +44,8 @@ public class OMSBlazorIdentityDbContext :
 
     public DbSet<IdentityUserDelegation> UserDelegations => throw new NotImplementedException();
 
+    public DbSet<IdentitySession> Sessions => throw new NotImplementedException();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.SetMultiTenancySide(MultiTenancySides.Host);
