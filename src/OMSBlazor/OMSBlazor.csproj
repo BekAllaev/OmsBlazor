@@ -23,11 +23,11 @@
 	<ItemGroup>
 		<ProjectReference Include="..\OMSBlazor.Client\OMSBlazor.Client.csproj" />
 		<PackageReference Include="BitzArt.Blazor.Cookies.Server" Version="1.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.*" />
-		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.*" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.*" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0" />
 		<PackageReference Include="Extensions.MudBlazor.StaticInput" Version="2.*" />
 	</ItemGroup>
 

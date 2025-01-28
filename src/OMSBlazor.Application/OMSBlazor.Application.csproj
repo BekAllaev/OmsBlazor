@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
     <PackageReference Include="QuestPDF" Version="2023.12.6" />
     <PackageReference Include="Volo.Abp.Account.Application" Version="8.0.1" />
     <PackageReference Include="Volo.Abp.Identity.Application" Version="8.0.1" />
