@@ -83,7 +83,7 @@ namespace OMSBlazor
 
             app.UseHttpsRedirection();
 
-            app.UseStaticFiles();
+            app.MapStaticAssets();
             app.UseAntiforgery();
 
             app.MapRazorComponents<App>()

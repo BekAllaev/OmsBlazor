@@ -27,11 +27,6 @@
                     <col />
                 </ColGroup>
                 <Columns>
-                    <TemplateColumn CellClass="d-flex justify-center" HeaderClassFunc="_ => GetHeaderClass()" StickyLeft="true">
-                        <CellTemplate>
-                            <MudButton Size="@MudBlazor.Size.Small" Variant="@Variant.Filled" Color="@MudBlazor.Color.Primary" OnClick="()=>ShowInvoice(context.Item.SourceOrderDto.OrderId)">Show invoice</MudButton>
-                        </CellTemplate>
-                    </TemplateColumn>
                     <PropertyColumn Property="x => x.SourceOrderDto.OrderId" Title="Id" Sortable="false" HeaderClassFunc="_ => GetHeaderClass()"/>
                     <TemplateColumn Title="Customer" CellClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()">
                         <CellTemplate>
@@ -51,15 +46,20 @@
                     <PropertyColumn Property="x=>x.SourceOrderDto.ShipName" Title="Ship name" CellClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()" />
                     <PropertyColumn Property="x=>x.SourceOrderDto.ShipCity" Title="Ship city" HeaderClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()" />
                     <PropertyColumn Property="x=>x.SourceOrderDto.ShipCountry" Title="Ship country" HeaderClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()" />
-                    <TemplateColumn HeaderClassFunc="_ => GetHeaderClass()" StickyRight="true">
+                    <TemplateColumn HeaderClassFunc="_ => GetHeaderClass()">
+                        <CellTemplate>
+                            <MudButton Size="@MudBlazor.Size.Small" Variant="@Variant.Filled" Color="@MudBlazor.Color.Primary" OnClick="()=>ShowInvoice(context.Item.SourceOrderDto.OrderId)">Invoice</MudButton>
+                        </CellTemplate>
+                    </TemplateColumn>
+                    <TemplateColumn HeaderClassFunc="_ => GetHeaderClass()" CellClass="d-flex justify-center">
                         <CellTemplate>
                             @if (context.Item.SourceOrderDto.PaymentId is null)
                             {
-                                <MudButton Size="@MudBlazor.Size.Small" Variant="@Variant.Filled" Color="@MudBlazor.Color.Primary" OnClick="()=>NavigateToCheckoutPage(context.Item.SourceOrderDto.OrderId)">Pay</MudButton>
+                                <MudButton Class="align-self-center" Size="@MudBlazor.Size.Small" Variant="@Variant.Filled" Color="@MudBlazor.Color.Primary" OnClick="()=>NavigateToCheckoutPage(context.Item.SourceOrderDto.OrderId)">Pay</MudButton>
                             }
                             else
                             {
-                                <MudChip T="string" Color="MudBlazor.Color.Success">Paid</MudChip>
+                                <MudAlert Severity="Severity.Success" Variant="Variant.Filled" Square="true" ContentAlignment="HorizontalAlignment.Center" Dense="true">Paid</MudAlert>
                             }
                         </CellTemplate>
                     </TemplateColumn>
