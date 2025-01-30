@@ -12,8 +12,139 @@
     }
     else
     {
-        @* This grid contain "show invoice" button and thus it is hidden on small screens(smartphones) *@
-        <div class="d-none d-sm-flex justify-center align-center">
+        @* This grid contain "show invoice" button and thus it is hidden on small screens(smartphones) but its visible on tablets *@
+        <div class="d-none d-sm-flex d-md-none flex-column">
+            <div class="d-flex flex-row align-center align-self-start">
+                <MudText>Show hidden columns:</MudText>
+                <MudTooltip Text="Show/hide columns related to ship info">
+                <MudSwitch @bind-Value="isColumnVisible" Color="MudBlazor.Color.Primary"/>
+                </MudTooltip>
+            </div>
+
+            <MudDataGrid T="SelectableOrderDto" Dense="true" Elevation="3" RowsPerPage="25" RowClass="cursor-pointer" RowClick="e=>ChangeSelectedOrder(e.Item.SourceOrderDto.OrderId)" Style="width:100%" Items="@ViewModel.Orders" RowStyleFunc="RowStyleFunc" Hover="true" Striped="true" Bordered="true">
+                <ColGroup>
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                </ColGroup>
+                <Columns>
+                    <PropertyColumn Property="x => x.SourceOrderDto.OrderId" Title="Id" Sortable="false" HeaderClassFunc="_ => GetHeaderClass()"/>
+                    <TemplateColumn Title="Customer" CellClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()">
+                        <CellTemplate>
+                            <MudText>
+                                @ViewModel.Customers.Single(x => x.CustomerId == context.Item.SourceOrderDto.CustomerId).CompanyName
+                            </MudText>
+                        </CellTemplate>
+                    </TemplateColumn>
+                    <TemplateColumn Title="Employee" CellClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()">
+                        <CellTemplate>
+                            <MudText>
+                                @ViewModel.Employees.Single(x => x.EmployeeId == context.Item.SourceOrderDto.EmployeeId).FirstName @ViewModel.Employees.Single(x => x.EmployeeId == context.Item.SourceOrderDto.EmployeeId).LastName
+                            </MudText>
+                        </CellTemplate>
+                    </TemplateColumn>
+                    <PropertyColumn Property="x => x.SourceOrderDto.OrderDate" Hidden="!isColumnVisible" Format="dd/MM/yyyy" Title="Order date" HeaderClassFunc="_ => GetHeaderClass()" />
+                    <PropertyColumn Property="x=>x.SourceOrderDto.ShipName" Hidden="!isColumnVisible" Title="Ship name" CellClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()" />
+                    <PropertyColumn Property="x=>x.SourceOrderDto.ShipCity" Hidden="!isColumnVisible" Title="Ship city" HeaderClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()" />
+                    <PropertyColumn Property="x=>x.SourceOrderDto.ShipCountry" Hidden="!isColumnVisible" Title="Ship country" HeaderClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()" />
+                    <TemplateColumn HeaderClassFunc="_ => GetHeaderClass()">
+                        <CellTemplate>
+                            <MudButton Size="@MudBlazor.Size.Small" Variant="@Variant.Filled" Color="@MudBlazor.Color.Primary" OnClick="()=>ShowInvoice(context.Item.SourceOrderDto.OrderId)">Invoice</MudButton>
+                        </CellTemplate>
+                    </TemplateColumn>
+                    <TemplateColumn HeaderClassFunc="_ => GetHeaderClass()" CellClass="d-flex justify-center">
+                        <CellTemplate>
+                            @if (context.Item.SourceOrderDto.PaymentId is null)
+                            {
+                                <MudButton Class="align-self-center" Size="@MudBlazor.Size.Small" Variant="@Variant.Filled" Color="@MudBlazor.Color.Primary" OnClick="()=>NavigateToCheckoutPage(context.Item.SourceOrderDto.OrderId)">Pay</MudButton>
+                            }
+                            else
+                            {
+                                <MudAlert Severity="Severity.Success" Dense="true" Variant="Variant.Filled" Square="true" ContentAlignment="HorizontalAlignment.Center">Paid</MudAlert>
+                            }
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+                <PagerContent>
+                    <MudDataGridPager T="SelectableOrderDto" />
+                </PagerContent>
+            </MudDataGrid>
+        </div>
+
+        @* This grid contain "show invoice" button and thus it is hidden on small screens(smartphones) but its visible on laptops *@
+        <div class="d-none d-lg-flex d-xl-none justify-center align-center flex-column">
+
+            <div class="d-flex flex-row align-center align-self-start">
+                <MudText>Show hidden columns:</MudText>
+                <MudTooltip Text="Show/hide columns related to ship info">
+                <MudSwitch @bind-Value="isColumnVisible" Color="MudBlazor.Color.Primary"/>
+                </MudTooltip>
+            </div>
+
+            <MudDataGrid T="SelectableOrderDto" Dense="true" Elevation="3" RowsPerPage="25" RowClass="cursor-pointer" RowClick="e=>ChangeSelectedOrder(e.Item.SourceOrderDto.OrderId)" Style="width:100%" Items="@ViewModel.Orders" RowStyleFunc="RowStyleFunc" Hover="true" Striped="true" Bordered="true">
+                <ColGroup>
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                </ColGroup>
+                <Columns>
+                    <PropertyColumn Property="x => x.SourceOrderDto.OrderId" Title="Id" Sortable="false" HeaderClassFunc="_ => GetHeaderClass()"/>
+                    <TemplateColumn Title="Customer" CellClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()">
+                        <CellTemplate>
+                            <MudText>
+                                @ViewModel.Customers.Single(x => x.CustomerId == context.Item.SourceOrderDto.CustomerId).CompanyName
+                            </MudText>
+                        </CellTemplate>
+                    </TemplateColumn>
+                    <TemplateColumn Title="Employee" CellClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()">
+                        <CellTemplate>
+                            <MudText>
+                                @ViewModel.Employees.Single(x => x.EmployeeId == context.Item.SourceOrderDto.EmployeeId).FirstName @ViewModel.Employees.Single(x => x.EmployeeId == context.Item.SourceOrderDto.EmployeeId).LastName
+                            </MudText>
+                        </CellTemplate>
+                    </TemplateColumn>
+                    <PropertyColumn Property="x => x.SourceOrderDto.OrderDate" Format="dd/MM/yyyy" Title="Order date" HeaderClassFunc="_ => GetHeaderClass()" />
+                    <PropertyColumn Property="x=>x.SourceOrderDto.ShipName" Title="Ship name" CellClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()" />
+                    <PropertyColumn Property="x=>x.SourceOrderDto.ShipCity" Hidden="!isColumnVisible" Title="Ship city" HeaderClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()" />
+                    <PropertyColumn Property="x=>x.SourceOrderDto.ShipCountry" Hidden="!isColumnVisible" Title="Ship country" HeaderClass="cell-style" HeaderClassFunc="_ => GetHeaderClass()" />
+                    <TemplateColumn HeaderClassFunc="_ => GetHeaderClass()">
+                        <CellTemplate>
+                            <MudButton Size="@MudBlazor.Size.Small" Variant="@Variant.Filled" Color="@MudBlazor.Color.Primary" OnClick="()=>ShowInvoice(context.Item.SourceOrderDto.OrderId)">Invoice</MudButton>
+                        </CellTemplate>
+                    </TemplateColumn>
+                    <TemplateColumn HeaderClassFunc="_ => GetHeaderClass()" CellClass="d-flex justify-center">
+                        <CellTemplate>
+                            @if (context.Item.SourceOrderDto.PaymentId is null)
+                            {
+                                <MudButton Class="align-self-center" Size="@MudBlazor.Size.Small" Variant="@Variant.Filled" Color="@MudBlazor.Color.Primary" OnClick="()=>NavigateToCheckoutPage(context.Item.SourceOrderDto.OrderId)">Pay</MudButton>
+                            }
+                            else
+                            {
+                                <MudAlert Severity="Severity.Success" Dense="true" Variant="Variant.Filled" Square="true" ContentAlignment="HorizontalAlignment.Center">Paid</MudAlert>
+                            }
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+                <PagerContent>
+                    <MudDataGridPager T="SelectableOrderDto" />
+                </PagerContent>
+            </MudDataGrid>
+        </div>
+
+        @* This grid contain "show invoice" button and thus it is hidden on small screens(smartphones) but its visible on desktop(extra large screens) *@
+        <div class="d-none d-xl-flex d-xxl-none">
             <MudDataGrid T="SelectableOrderDto" Dense="true" Elevation="3" RowsPerPage="25" RowClass="cursor-pointer" RowClick="e=>ChangeSelectedOrder(e.Item.SourceOrderDto.OrderId)" Style="width:100%" Items="@ViewModel.Orders" RowStyleFunc="RowStyleFunc" Hover="true" Striped="true" Bordered="true">
                 <ColGroup>
                     <col />
@@ -59,7 +190,7 @@
                             }
                             else
                             {
-                                <MudAlert Severity="Severity.Success" Variant="Variant.Filled" Square="true" ContentAlignment="HorizontalAlignment.Center" Dense="true">Paid</MudAlert>
+                                <MudAlert Severity="Severity.Success" Dense="true" Variant="Variant.Filled" Square="true" ContentAlignment="HorizontalAlignment.Center">Paid</MudAlert>
                             }
                         </CellTemplate>
                     </TemplateColumn>
@@ -137,6 +268,7 @@
     IDisposable registerLocationChangingHanlderDisposable = default!;
 
     private bool invoicePresent;
+    private bool isColumnVisible = false;
 
     protected override void Dispose(bool disposing)
     {
