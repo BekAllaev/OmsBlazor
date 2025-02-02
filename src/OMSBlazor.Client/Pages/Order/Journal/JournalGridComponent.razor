@@ -62,7 +62,7 @@
                 </CellTemplate>
             </TemplateColumn>
         }
-        <TemplateColumn HeaderClassFunc="_ => GetHeaderClass()" CellClass="d-flex justify-center">
+        <TemplateColumn HeaderClassFunc="_ => GetHeaderClass()" CellClassFunc="e=> GetCellClassesForPay()">
             <CellTemplate>
                 @if (context.Item.SourceOrderDto.PaymentId is null)
                 {
@@ -131,6 +131,11 @@
 
     [Parameter]
     public EventCallback<int> OnPayClicked { get; set; }
+
+    private string GetCellClassesForPay()
+    {
+        return Device is Device.Smartphone ? "d-flex justify-end" : "d-flex justify-center";
+    }
 
     private bool IsColumnHidden(Column column)
     {
