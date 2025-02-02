@@ -144,11 +144,17 @@
                 };
             case Column.ShipCity:
             case Column.ShipCountry:
-            case Column.ShipName:
                 return Device switch
                 {
                     Device.Smartphone => true,
                     Device.Desktop => false,
+                    _ => !isColumnVisible
+                };
+            case Column.ShipName:
+                return Device switch
+                {
+                    Device.Smartphone => true,
+                    Device.Desktop or Device.Laptop => false,
                     _ => !isColumnVisible
                 };
             default:
