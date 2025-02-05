@@ -132,3 +132,9 @@ public class OMSBlazorHttpApiHostModule : AbpModule
 {
 }
 ```
+
+## Adaptive Web Hosting wasn't able to find appsettings.json
+During last couple of days (this note is created on 02.05.2025) we struggled with problem that our hosting server - Adaptive Web Host
+was not able to find `appsettings.json` file of `OMSBlazor.Client` project. Even though this file was on the server. The reason of this problem was that we don't included `appsettings.json` file into publish folder.
+We did this because we did want to update this file every time and exactly this was causing the problem, once we start to include this file into publish folder, hosting server starts to work without errors.
+No explanation for this yet but taking note of this, since this may help in future troubleshooting.
