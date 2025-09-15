@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "Reporting": {
+      "path": "Reporting.abpmdl"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Reporting</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="9.3.3" />
+    <PackageReference Include="Volo.Abp.Authorization" Version="9.3.3" />
+    <ProjectReference Include="..\Reporting.Domain.Shared\Reporting.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

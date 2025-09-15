@@ -30,7 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\src\StripeModule.Domain.Shared\StripeModule.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\modules\Reporting\src\Reporting.Domain.Shared\Reporting.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\modules\StripeModule\src\StripeModule.Domain.Shared\StripeModule.Domain.Shared.csproj" />
   </ItemGroup>
 
 </Project>

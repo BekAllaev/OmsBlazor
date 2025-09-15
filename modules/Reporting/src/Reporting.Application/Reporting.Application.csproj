@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Reporting</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="9.3.3" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.3.3" />
+    <ProjectReference Include="..\Reporting.Application.Contracts\Reporting.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Reporting.Domain\Reporting.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
