@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css">
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link rel="icon" type="image/ico" href="favicon.ico" />
+    <Reporting.Pages.ReportingScripts @rendermode="InteractiveServer" />
     <HeadOutlet @rendermode="RenderModeForPage" />
 </head>
 
@@ -24,13 +25,13 @@
             {
                 @* Here we are interested in exceptions that are re-thrown from catch block *@
                 @* Exception message contains the class and method names where exception occured *@
-                    <p>Exception message: @context.Message</p>
+                <p>Exception message: @context.Message</p>
                 @* Inner exception message contains message of the exception that breaked application *@
-                    <p>Inner exception message: @context.InnerException.Message</p>
+                <p>Inner exception message: @context.InnerException.Message</p>
             }
             else
             {
-                    <p>Exception message: @context.Message</p>
+                <p>Exception message: @context.Message</p>
             }
         </ErrorContent>
     </ErrorBoundary>
@@ -45,7 +46,14 @@
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
-    private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.StartsWithSegments("/Account")
-        ? null
-        : new InteractiveAutoRenderMode(prerender: true);
+    private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.Value switch
+    {
+        "/Account" => null,
+        "/Report" => new InteractiveServerRenderMode(),
+        _ => new InteractiveAutoRenderMode(prerender: true)
+    };
+
+    // private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.StartsWithSegments("/Account")
+    //     ? null
+    //     : new InteractiveAutoRenderMode(prerender: true);
 }

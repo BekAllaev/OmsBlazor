@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\Reporting\src\Reporting.Application\Reporting.Application.csproj" />
     <ProjectReference Include="..\..\modules\StripeModule\src\StripeModule.Application\StripeModule.Application.csproj" />
     <ProjectReference Include="..\OMSBlazor.Domain\OMSBlazor.Domain.csproj" />
     <ProjectReference Include="..\OMSBlazor.Application.Contracts\OMSBlazor.Application.Contracts.csproj" />

@@ -89,7 +89,7 @@ namespace OMSBlazor
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
                 .AddInteractiveWebAssemblyRenderMode()
-                .AddAdditionalAssemblies(typeof(Client._Imports).Assembly, typeof(StripeModule.Pages.OrderPaid).Assembly);
+                .AddAdditionalAssemblies(typeof(Client._Imports).Assembly, typeof(StripeModule.Pages.OrderPaid).Assembly, typeof(Reporting.Pages.Report).Assembly);
 
             // Add additional endpoints required by the Identity /Account Razor components.
             app.MapAdditionalIdentityEndpoints();

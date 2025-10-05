@@ -145,6 +145,7 @@ public class OMSBlazorHttpApiHostModule : AbpModule
                 options.FileSets.ReplaceEmbeddedByPhysical<OMSBlazorApplicationModule>(
                     Path.Combine(hostingEnvironment.ContentRootPath,
                         $"..{Path.DirectorySeparatorChar}OMSBlazor.Application"));
+                
             });
         }
     }

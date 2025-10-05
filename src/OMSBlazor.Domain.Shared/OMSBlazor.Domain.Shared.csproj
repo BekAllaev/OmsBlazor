@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>OMSBlazor</RootNamespace>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\Reporting\src\Reporting.Domain.Shared\Reporting.Domain.Shared.csproj" />
     <ProjectReference Include="..\..\modules\StripeModule\src\StripeModule.Domain.Shared\StripeModule.Domain.Shared.csproj" />
   </ItemGroup>
 

@@ -3,13 +3,12 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>OMSBlazor</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\Reporting\src\Reporting.Application.Contracts\Reporting.Application.Contracts.csproj" />
     <ProjectReference Include="..\..\modules\StripeModule\src\StripeModule.Application.Contracts\StripeModule.Application.Contracts.csproj" />
     <ProjectReference Include="..\OMSBlazor.Domain.Shared\OMSBlazor.Domain.Shared.csproj" />
   </ItemGroup>
