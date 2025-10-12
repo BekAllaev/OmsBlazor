@@ -1,4 +1,5 @@
 using BitzArt.Blazor.Cookies;
+using BoldReports.Web;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ using OMSBlazor.Client.Services.HubConnectionsService;
 using OMSBlazor.Components;
 using OMSBlazor.Components.Account;
 using OMSBlazor.Data;
+using Reporting.Pages.Services;
+using Reporting.Services;
 
 namespace OMSBlazor
 {
@@ -20,6 +23,8 @@ namespace OMSBlazor
     {
         public static void Main(string[] args)
         {
+            Bold.Licensing.BoldLicenseProvider.RegisterLicense("gFVmCnZi2bVTJyccaSRxm5thTNY+P9ONI5ME6zQR0p0=");
+
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? throw new NullReferenceException()) });
@@ -55,6 +60,8 @@ namespace OMSBlazor
 
             builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+            builder.Services.AddMemoryCache();
+
             builder.Services.AddSingleton<IHubConnectionsService, HubConnectionsService>();
 
             builder.Services.AddScoped<CustomerStasticsViewModel>();
@@ -63,10 +70,22 @@ namespace OMSBlazor
             builder.Services.AddScoped<ProductStasticsViewModel>();
             builder.Services.AddScoped<JournalViewModel>();
             builder.Services.AddScoped<CreateViewModel>();
+            builder.Services.AddSingleton<IJsonDataSourceUpdater, JsonDataSourceUpdater>();
 
             builder.AddBlazorCookies();
 
+            builder.Services.AddControllers();
+
             var app = builder.Build();
+
+            ReportConfig.DefaultSettings = new ReportSettings().RegisterExtensions(new List<string> {"BoldReports.Data.WebData",
+                                                                                        "BoldReports.Data.PostgreSQL",
+                                                                                        "BoldReports.Data.Excel",
+                                                                                        "BoldReports.Data.Csv",
+                                                                                        "BoldReports.Data.Oracle",
+                                                                                        "BoldReports.Data.ElasticSearch",
+                                                                                        "BoldReports.Data.Snowflake",
+                                                                                        "BoldReports.Data.SSAS"});
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -84,15 +103,19 @@ namespace OMSBlazor
             app.UseHttpsRedirection();
 
             app.MapStaticAssets();
+            app.UseStaticFiles();
+
             app.UseAntiforgery();
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode()
                 .AddInteractiveWebAssemblyRenderMode()
-                .AddAdditionalAssemblies(typeof(Client._Imports).Assembly, typeof(StripeModule.Pages.OrderPaid).Assembly, typeof(Reporting.Pages.Report).Assembly);
+                .AddAdditionalAssemblies(typeof(Client._Imports).Assembly, typeof(StripeModule.Pages.OrderPaid).Assembly);
 
             // Add additional endpoints required by the Identity /Account Razor components.
             app.MapAdditionalIdentityEndpoints();
+            
+            app.MapControllers();
 
             app.Run();
         }

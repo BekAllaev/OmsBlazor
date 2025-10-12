@@ -1,0 +1,42 @@
+[
+  {
+    "categoryName": "Kids",
+    "productsCount": 12
+  },
+  {
+    "categoryName": "Tools",
+    "productsCount": 181
+  },
+  {
+    "categoryName": "Jewelery",
+    "productsCount": 14
+  },
+  {
+    "categoryName": "Baby",
+    "productsCount": 158
+  },
+  {
+    "categoryName": "Games",
+    "productsCount": 32
+  },
+  {
+    "categoryName": "Toys",
+    "productsCount": 12
+  },
+  {
+    "categoryName": "Grocery",
+    "productsCount": 197
+  },
+  {
+    "categoryName": "Garden",
+    "productsCount": 41
+  },
+  {
+    "categoryName": "Jewelery",
+    "productsCount": 189
+  },
+  {
+    "categoryName": "Books",
+    "productsCount": 144
+  }
+]

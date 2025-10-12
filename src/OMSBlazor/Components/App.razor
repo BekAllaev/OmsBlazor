@@ -10,7 +10,20 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css">
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
     <link rel="icon" type="image/ico" href="favicon.ico" />
-    <Reporting.Pages.ReportingScripts @rendermode="InteractiveServer" />
+
+    <!-- Report Viewer component style -->
+    <link href="https://cdn.boldreports.com/8.1.1/content/v2.0/tailwind-light/bold.report-viewer.min.css" rel="stylesheet" />
+
+    <!-- Report Viewer component dependent scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.boldreports.com/8.1.1/scripts/v2.0/common/bold.reports.common.min.js"></script>
+    <script src="https://cdn.boldreports.com/8.1.1/scripts/v2.0/common/bold.reports.widgets.min.js"></script>
+
+    <!-- Report Viewer component script -->
+    <script src="https://cdn.boldreports.com/8.1.1/scripts/v2.0/bold.report-viewer.min.js"></script>
+    <!-- Blazor interop file -->
+    <script src="_content/Reporting/scripts/boldreports-interop.js"></script>
+
     <HeadOutlet @rendermode="RenderModeForPage" />
 </head>
 
@@ -48,8 +61,8 @@
 
     private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.Value switch
     {
-        "/Account" => null,
-        "/Report" => new InteractiveServerRenderMode(),
+        var p when p is not null && p.StartsWith("/Account") => null,
+        "/report" => InteractiveServer,
         _ => new InteractiveAutoRenderMode(prerender: true)
     };
 

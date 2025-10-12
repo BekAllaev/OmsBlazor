@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "lastName": "Wehner",
+    "sales": 8451.2
+  },
+  {
+    "id": 2,
+    "lastName": "Hahn",
+    "sales": 6377.16
+  },
+  {
+    "id": 3,
+    "lastName": "Rau",
+    "sales": 11565.14
+  },
+  {
+    "id": 4,
+    "lastName": "Gislason",
+    "sales": 7030.96
+  },
+  {
+    "id": 5,
+    "lastName": "Gutmann",
+    "sales": 16864.99
+  },
+  {
+    "id": 6,
+    "lastName": "Frami",
+    "sales": 14394.3
+  },
+  {
+    "id": 7,
+    "lastName": "Schamberger",
+    "sales": 8792.75
+  },
+  {
+    "id": 8,
+    "lastName": "Green",
+    "sales": 6065.49
+  },
+  {
+    "id": 9,
+    "lastName": "Tremblay",
+    "sales": 16830.17
+  },
+  {
+    "id": 10,
+    "lastName": "Herman",
+    "sales": 15298.97
+  }
+]
