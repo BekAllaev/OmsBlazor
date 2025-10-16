@@ -65,8 +65,4 @@
         "/report" => InteractiveServer,
         _ => new InteractiveAutoRenderMode(prerender: true)
     };
-
-    // private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.StartsWithSegments("/Account")
-    //     ? null
-    //     : new InteractiveAutoRenderMode(prerender: true);
 }
