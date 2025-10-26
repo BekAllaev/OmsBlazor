@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using OMSBlazor.Client.Constants;
+using OMSBlazor.Client.Services.HubConnectionsService;
+using OMSBlazor.Client.Services.StatisticsReader;
 using Reporting.Pages.Services;
+using System.Collections;
+using System.Net.Http;
 
 namespace OMSBlazor.Client.Pages.Report
 {
@@ -8,15 +13,21 @@ namespace OMSBlazor.Client.Pages.Report
     {
         private readonly NavigationManager navigationManager;
         private readonly IJsonDataSourceUpdater jsonDataSourceUpdater;
-        private readonly HubConnection hub;
+        private readonly IHubConnectionsService hubConnectionsService;
+        private readonly IStatisticsDataReader statisticsDataReader;
 
         private bool _subscribed;
 
-        public ReportPage(NavigationManager navigationManager, IJsonDataSourceUpdater jsonDataSourceUpdater, HubConnection hub)
+        public ReportPage(
+            NavigationManager navigationManager, 
+            IJsonDataSourceUpdater jsonDataSourceUpdater, 
+            IHubConnectionsService hubConnectionsService,
+            IStatisticsDataReader statisticsDataReader)
         {
             this.navigationManager = navigationManager;
             this.jsonDataSourceUpdater = jsonDataSourceUpdater;
-            this.hub = hub;
+            this.hubConnectionsService = hubConnectionsService;
+            this.statisticsDataReader = statisticsDataReader;
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -25,17 +36,17 @@ namespace OMSBlazor.Client.Pages.Report
 
             if (!_subscribed)
             {
-                //hub.On<>("ReceiveAllStats", async data =>
-                //{
-                //    await jsonDataSourceUpdater.UpdateDataSourceAsync(data);
-                //    navigationManager.NavigateTo(navigationManager.Uri, true);
-                //});
+                hubConnectionsService.DashboardHubConnection.On("UpdateDashboard", async () =>
+                {
+                    var data = await statisticsDataReader.GetData();
+                    await jsonDataSourceUpdater.UpdateDataSourceAsync(data);
+                    navigationManager.NavigateTo(navigationManager.Uri, true);
+                });
                 _subscribed = true;
             }
 
-            if (hub.State == HubConnectionState.Disconnected)
-                await hub.StartAsync();
-
+            if (hubConnectionsService.DashboardHubConnection.State == HubConnectionState.Disconnected)
+                await hubConnectionsService.DashboardHubConnection.StartAsync();
         }
     }
 }

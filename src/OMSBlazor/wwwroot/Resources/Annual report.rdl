@@ -32,36 +32,35 @@
             <ChartSeriesHierarchy>
               <ChartMembers>
                 <ChartMember>
-                  <Label>=Fields!CountryName.Value</Label>
-                  <Group Name="Chart1_SeriesGroup1">
-                    <GroupExpressions>
-                      <GroupExpression>=Fields!CountryName.Value</GroupExpression>
-                    </GroupExpressions>
-                  </Group>
-                  <SortExpressions>
-                    <SortExpression>
-                      <Value>=Fields!CountryName.Value</Value>
-                      <Direction>Ascending</Direction>
-                    </SortExpression>
-                  </SortExpressions>
+                  <Label>customersCount</Label>
                 </ChartMember>
               </ChartMembers>
             </ChartSeriesHierarchy>
             <ChartCategoryHierarchy>
               <ChartMembers>
                 <ChartMember>
-                  <Label />
-                  <Group Name="Chart_Group6" />
+                  <Label>=Fields!countryName.Value</Label>
+                  <Group Name="Chart1_CategoryGroup2">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!countryName.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!countryName.Value</Value>
+                      <Direction>Ascending</Direction>
+                    </SortExpression>
+                  </SortExpressions>
                 </ChartMember>
               </ChartMembers>
             </ChartCategoryHierarchy>
             <ChartData>
               <ChartSeriesCollection>
-                <ChartSeries Name="Count1">
+                <ChartSeries Name="customersCount2">
                   <ChartDataPoints>
                     <ChartDataPoint>
                       <ChartDataPointValues>
-                        <Y>=Sum(Fields!Count.Value)</Y>
+                        <Y>=Sum(Fields!customersCount.Value)</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
                         <Style>
@@ -734,16 +733,25 @@
             <ChartCategoryHierarchy>
               <ChartMembers>
                 <ChartMember>
-                  <Label>=Fields!Customer.Value</Label>
+                  <Label>=Fields!companyName.Value</Label>
                   <Group Name="Chart3_CategoryGroup1">
                     <GroupExpressions>
-                      <GroupExpression>=Fields!Customer.Value</GroupExpression>
+                      <GroupExpression>=Fields!companyName.Value</GroupExpression>
                     </GroupExpressions>
+                    <Filters>
+                      <Filter>
+                        <FilterExpression>=Fields!Purchases.Value</FilterExpression>
+                        <Operator>TopN</Operator>
+                        <FilterValues>
+                          <FilterValue DataType="Float">5</FilterValue>
+                        </FilterValues>
+                      </Filter>
+                    </Filters>
                   </Group>
                   <SortExpressions>
                     <SortExpression>
                       <Value>=Fields!Purchases.Value</Value>
-                      <Direction>Descending</Direction>
+                      <Direction>Ascending</Direction>
                     </SortExpression>
                   </SortExpressions>
                 </ChartMember>
@@ -1343,7 +1351,7 @@
             </ChartLegends>
             <ChartTitles>
               <ChartTitle Name="Default">
-                <Caption>Purchases by customer</Caption>
+                <Caption>Purchases by customer (Top 5)</Caption>
                 <Style>
                   <FontSize>10.5pt</FontSize>
                   <FontWeight>Bold</FontWeight>
@@ -3745,7 +3753,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=First(Fields!TotalSales.Value, "SummariesDataSet")</Value>
+                        <Value>=First(Fields!OverallSales.Value, "SummariesDataSet")</Value>
                         <Style>
                           <FontFamily>Arial</FontFamily>
                           <FontSize>12.24975pt</FontSize>
@@ -3840,7 +3848,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=First(Fields!TotalOrders.Value, "SummariesDataSet")</Value>
+                        <Value>=First(Fields!OrdersQuantity.Value, "SummariesDataSet")</Value>
                         <Style>
                           <FontFamily>Arial</FontFamily>
                           <FontSize>12.24975pt</FontSize>
@@ -3957,14 +3965,14 @@
       <rd:SecurityType>None</rd:SecurityType>
       <ConnectionProperties>
         <DataProvider>JSON</DataProvider>
-        <ConnectString>{"Data":"[\n  { \"CountryName\": \"USA\", \"Count\": 120 },\n  { \"CountryName\": \"Germany\", \"Count\": 85 },\n  { \"CountryName\": \"UK\", \"Count\": 60 },\n  { \"CountryName\": \"France\", \"Count\": 50 },\n  { \"CountryName\": \"Brazil\", \"Count\": 45 },\n  { \"CountryName\": \"Canada\", \"Count\": 30 }\n]\n","DataMode":"inline","URL":""}</ConnectString>
+        <ConnectString>{"Data":"[\n  { \"countryName\": \"USA\", \"customersCount\": 120 },\n  { \"countryName\": \"Germany\", \"customersCount\": 85 },\n  { \"countryName\": \"UK\", \"customersCount\": 60 },\n  { \"countryName\": \"France\", \"customersCount\": 50 },\n  { \"countryName\": \"Brazil\", \"customersCount\": 45 },\n  { \"countryName\": \"Canada\", \"customersCount\": 30 }\n]\n","DataMode":"inline","URL":""}</ConnectString>
       </ConnectionProperties>
     </DataSource>
     <DataSource Name="PurchasesByCustomers">
       <rd:SecurityType>None</rd:SecurityType>
       <ConnectionProperties>
         <DataProvider>JSON</DataProvider>
-        <ConnectString>{"Data":"[\n  { \"Customer\": \"Great Lakes Food Market\", \"Purchases\": 13245.00 },\n  { \"Customer\": \"Alfreds Futterkiste\", \"Purchases\": 12345.67 },\n  { \"Customer\": \"Island Trading\", \"Purchases\": 11500.30 },\n  { \"Customer\": \"Bon App\", \"Purchases\": 9876.54 },\n  { \"Customer\": \"Hungry Owl All-Night Grocers\", \"Purchases\": 9456.78 },\n  { \"Customer\": \"Eastern Connection\", \"Purchases\": 7543.21 }\n]\n","DataMode":"inline","URL":""}</ConnectString>
+        <ConnectString>{"Data":"[\n  { \"companyName\": \"Great Lakes Food Market\", \"Purchases\": 13245.00 },\n  { \"companyName\": \"Alfreds Futterkiste\", \"Purchases\": 12345.67 },\n  { \"companyName\": \"Island Trading\", \"Purchases\": 11500.30 },\n  { \"companyName\": \"Bon App\", \"Purchases\": 9876.54 },\n  { \"companyName\": \"Hungry Owl All-Night Grocers\", \"Purchases\": 9456.78 },\n  { \"companyName\": \"Eastern Connection\", \"Purchases\": 7543.21 }\n]\n","DataMode":"inline","URL":""}</ConnectString>
       </ConnectionProperties>
     </DataSource>
     <DataSource Name="SalesByEmployee">
@@ -3992,69 +4000,11 @@
       <rd:SecurityType>None</rd:SecurityType>
       <ConnectionProperties>
         <DataProvider>JSON</DataProvider>
-        <ConnectString>{"Data":"[\n  {\n    \"MaxCheck\": 1234.56 ,\n    \"MinCheck\": 12.34 ,\n    \"AverageCheck\": 345.67 ,\n    \"TotalOrders\": 1298.00 ,\n    \"TotalCustomers\" : 390.00 ,\n    \"TotalSales\": 720000.00\n  }\n]","DataMode":"inline","URL":""}</ConnectString>
+        <ConnectString>{"Data":"[\n  {\n    \"MaxCheck\": 1234.56 ,\n    \"MinCheck\": 12.34 ,\n    \"AverageCheck\": 345.67 ,\n    \"OrdersQuantity\": 1298.00 ,\n    \"TotalCustomers\" : 390.00 ,\n    \"OverallSales\": 720000.00\n  }\n]","DataMode":"inline","URL":""}</ConnectString>
       </ConnectionProperties>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="CustomersByCountry">
-      <Query>
-        <DataSourceName>CustomersByCountry</DataSourceName>
-        <CommandText>{"Name":"Result","Columns":[]}</CommandText>
-        <QueryDesignerState xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
-          <Tables>
-            <Table Name="Result" Schema="">
-              <Columns>
-                <Column Name="CountryName" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
-                <Column Name="Count" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
-              </Columns>
-              <SchemaLevels>
-                <SchemaInfo Name="Result" SchemaType="Table" />
-              </SchemaLevels>
-            </Table>
-          </Tables>
-        </QueryDesignerState>
-      </Query>
-      <Fields>
-        <Field Name="CountryName">
-          <DataField>CountryName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Count">
-          <DataField>Count</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="PurchasesByCustomers">
-      <Query>
-        <DataSourceName>PurchasesByCustomers</DataSourceName>
-        <CommandText>{"Name":"Result","Columns":[]}</CommandText>
-        <QueryDesignerState xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
-          <Tables>
-            <Table Name="Result" Schema="">
-              <Columns>
-                <Column Name="Customer" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
-                <Column Name="Purchases" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
-              </Columns>
-              <SchemaLevels>
-                <SchemaInfo Name="Result" SchemaType="Table" />
-              </SchemaLevels>
-            </Table>
-          </Tables>
-        </QueryDesignerState>
-      </Query>
-      <Fields>
-        <Field Name="Customer">
-          <DataField>Customer</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Purchases">
-          <DataField>Purchases</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
     <DataSet Name="SalesByEmployee">
       <Query>
         <DataSourceName>SalesByEmployee</DataSourceName>
@@ -4152,6 +4102,64 @@
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="CustomersByCountry">
+      <Query>
+        <DataSourceName>CustomersByCountry</DataSourceName>
+        <CommandText>{"Name":"Result","Columns":[]}</CommandText>
+        <QueryDesignerState xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
+          <Tables>
+            <Table Name="Result" Schema="">
+              <Columns>
+                <Column Name="countryName" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
+                <Column Name="customersCount" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
+              </Columns>
+              <SchemaLevels>
+                <SchemaInfo Name="Result" SchemaType="Table" />
+              </SchemaLevels>
+            </Table>
+          </Tables>
+        </QueryDesignerState>
+      </Query>
+      <Fields>
+        <Field Name="countryName">
+          <DataField>countryName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="customersCount">
+          <DataField>customersCount</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="PurchasesByCustomers">
+      <Query>
+        <DataSourceName>PurchasesByCustomers</DataSourceName>
+        <CommandText>{"Name":"Result","Columns":[]}</CommandText>
+        <QueryDesignerState xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
+          <Tables>
+            <Table Name="Result" Schema="">
+              <Columns>
+                <Column Name="companyName" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
+                <Column Name="Purchases" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
+              </Columns>
+              <SchemaLevels>
+                <SchemaInfo Name="Result" SchemaType="Table" />
+              </SchemaLevels>
+            </Table>
+          </Tables>
+        </QueryDesignerState>
+      </Query>
+      <Fields>
+        <Field Name="companyName">
+          <DataField>companyName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Purchases">
+          <DataField>Purchases</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
     <DataSet Name="SummariesDataSet">
       <Query>
         <DataSourceName>Summaries</DataSourceName>
@@ -4163,9 +4171,9 @@
                 <Column Name="MaxCheck" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
                 <Column Name="MinCheck" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
                 <Column Name="AverageCheck" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
-                <Column Name="TotalOrders" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
+                <Column Name="OrdersQuantity" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
                 <Column Name="TotalCustomers" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
-                <Column Name="TotalSales" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
+                <Column Name="OverallSales" AliasName="" AggregateType="" IsDuplicate="False" IsSelected="True" />
               </Columns>
               <SchemaLevels>
                 <SchemaInfo Name="Result" SchemaType="Table" />
@@ -4187,16 +4195,16 @@
           <DataField>AverageCheck</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
-        <Field Name="TotalOrders">
-          <DataField>TotalOrders</DataField>
+        <Field Name="OrdersQuantity">
+          <DataField>OrdersQuantity</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="TotalCustomers">
           <DataField>TotalCustomers</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
-        <Field Name="TotalSales">
-          <DataField>TotalSales</DataField>
+        <Field Name="OverallSales">
+          <DataField>OverallSales</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
       </Fields>
