@@ -7,7 +7,7 @@ In order to start application you should start `HttpApi.Host` project first, the
 In order to log in to the system use this default credentials: Login - **admin**, password - **1q2w3E***
 
 ------------------------
-<b>1. Switch to EF Core SQLite Provider:</b>  
+<b>1. Switch to EF Core SQLite Provider:</b>   
 https://docs.abp.io/en/abp/latest/Entity-Framework-Core-SQLite
 > For SQLite connection string use this pattern: "Filename=./MyDatabaseName.db",
 this pattern will create databases in `bin` folder of the project where migrations are executed
