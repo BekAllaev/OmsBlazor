@@ -30,6 +30,12 @@ jobs:
       - name: List publish directory
         run: ls -R ./publish
 
+      - name: Create deployment package
+        run: |
+          cd publish
+          zip -r ../app.zip .
+          cd ..
+
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -40,5 +46,5 @@ jobs:
           az webapp deploy \
             --name ${{ secrets.AZURE_WEBAPP_NAME }} \
             --resource-group oms \
-            --src-path "./publish" \
+            --src-path "app.zip" \
             --type zip
