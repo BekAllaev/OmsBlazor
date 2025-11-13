@@ -25,7 +25,11 @@ jobs:
         run: dotnet build src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Release --output ./publish --no-build
+        run: dotnet publish src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Release 
+
+      - name: List publish directory
+        run: |
+          ls -R src/OMSBlazor.HttpApi.Host/bin/Release
 
       - name: Azure Login
         uses: azure/login@v2
@@ -37,5 +41,5 @@ jobs:
           az webapp deploy \
             --name ${{ secrets.AZURE_WEBAPP_NAME }} \
             --resource-group oms \
-            --src-path "./publish" \
+            --src-path "src/OMSBlazor.HttpApi.Host/bin/Release/net9.0/publish" \
             --type zip
