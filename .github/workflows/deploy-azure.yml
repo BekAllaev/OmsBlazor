@@ -13,10 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .NET 9
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '8.0.x'
 
       - name: Restore dependencies
         run: dotnet restore src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj
@@ -41,5 +41,5 @@ jobs:
           az webapp deploy \
             --name ${{ secrets.AZURE_WEBAPP_NAME }} \
             --resource-group oms \
-            --src-path "src/OMSBlazor.HttpApi.Host/bin/Release/net9.0/publish" \
+            --src-path "src/OMSBlazor.HttpApi.Host/bin/Release/net8.0/publish" \
             --type zip
