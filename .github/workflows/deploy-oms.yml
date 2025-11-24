@@ -1,0 +1,87 @@
+name: Deploy OMSBlazor backend & frontend to Azure (Linux)
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore backend dependencies
+        run: dotnet restore src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj
+
+      - name: Build backend
+        run: dotnet build src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Release --no-restore
+
+      - name: Publish backend
+        run: dotnet publish src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Release --output ./backend-publish --no-build
+
+      - name: Create backend deployment package
+        run: |
+          cd backend-publish
+          zip -r ../backend-app.zip .
+          cd ..
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy backend to Azure WebApp (Linux)
+        run: |
+          az webapp deploy \
+            --name ${{ secrets.AZURE_BACKEND_NAME }} \
+            --resource-group oms \
+            --src-path "backend-app.zip" \
+            --type zip
+
+  build-and-deploy-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore frontend dependencies
+        run: dotnet restore src/OMSBlazor/OMSBlazor.csproj
+
+      - name: Build frontend
+        run: dotnet build src/OMSBlazor/OMSBlazor.csproj --configuration Release --no-restore
+
+      - name: Publish frontend
+        run: dotnet publish src/OMSBlazor/OMSBlazor.csproj --configuration Release --output ./frontend-publish --no-build
+
+      - name: Create frontend deployment package
+        run: |
+          cd frontend-publish
+          zip -r ../frontend-app.zip .
+          cd ..
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy frontend to Azure WebApp (Linux)
+        run: |
+          az webapp deploy \
+            --name ${{ secrets.AZURE_FRONT_NAME }} \
+            --resource-group oms \
+            --src-path "frontend-app.zip" \
+            --type zip

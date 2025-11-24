@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.33530.505
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OMSBlazor.Domain", "src\OMSBlazor.Domain\OMSBlazor.Domain.csproj", "{554AD327-6DBA-4F8F-96F8-81CE7A0C863F}"
 EndProject
@@ -38,6 +38,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F1FA4DBD-C363-4389-8600-CA992A085034}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
+		.github\workflows\deploy-oms.yml = .github\workflows\deploy-oms.yml
 		src\OMSBlazor.HttpApi.Host\NorthwindIdentitySQLite.sqlite = src\OMSBlazor.HttpApi.Host\NorthwindIdentitySQLite.sqlite
 		src\OMSBlazor.HttpApi.Host\NorthwindSQLite.sqlite = src\OMSBlazor.HttpApi.Host\NorthwindSQLite.sqlite
 		README.md = README.md
