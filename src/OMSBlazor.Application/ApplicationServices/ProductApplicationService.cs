@@ -11,6 +11,7 @@ using OMSBlazor.Interfaces.ApplicationServices;
 using System.Linq;
 using Volo.Abp.Caching;
 using Microsoft.Extensions.Caching.Distributed;
+using System;
 
 namespace OMSBlazor.Application.ApplicationServices
 {
@@ -20,14 +21,14 @@ namespace OMSBlazor.Application.ApplicationServices
         private readonly IReadOnlyRepository<Product, int> _productReadOnlyRepository; // AsNoTracking behind the scenes for Get requests 
         private readonly IRepository<ProductsByCategory, int> _productsByCategoryRepository;
         private readonly IProductManager _productManager;
-        private readonly IDistributedCache<IQueryable<Product>> _productCache; // added InMemory cache for products
+        private readonly IDistributedCache<List<Product>> _productCache; // added InMemory cache for products
 
         public ProductApplicationService(
             IRepository<Product, int> productRepository,
             IReadOnlyRepository<Product, int> productReadOnlyRepository,
             IProductManager productManager,
             IRepository<ProductsByCategory, int> productsByCategoryRepository,
-            IDistributedCache<IQueryable<Product>> productCache)
+            IDistributedCache<List<Product>> productCache)
         {
             _productRepository = productRepository;
             _productReadOnlyRepository = productReadOnlyRepository;
@@ -39,15 +40,26 @@ namespace OMSBlazor.Application.ApplicationServices
         public async Task<List<ProductDto>> GetProductsAsync()
         {
             // InMemory cache for products
-            var productQuery = await _productCache.GetOrAddAsync(
-                "productQuery",
-                async () => await _productReadOnlyRepository.GetQueryableAsync(),
+            var products = await _productCache.GetOrAddAsync(
+                "products",
+                async () => 
+                {
+                    var list = await _productReadOnlyRepository.ToListAsync();
+                    return list;
+                },
                 () => new DistributedCacheEntryOptions
                 {
                     AbsoluteExpiration = System.DateTimeOffset.Now.AddHours(1)
-                }, null, false);
+                }, 
+                null, 
+                false);
 
-            return ObjectMapper.Map<List<Product>, List<ProductDto>>(productQuery.ToList());
+            if (products is null)
+            {
+                throw new Exception(OMSBlazorDomainErrorCodes.ProductListIsNull);
+            }
+
+            return ObjectMapper.Map<List<Product>, List<ProductDto>>(products);
         }
 
         public async Task<ProductDto> GetProductAsync(int id)
