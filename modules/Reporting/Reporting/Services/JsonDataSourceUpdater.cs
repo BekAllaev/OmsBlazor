@@ -22,7 +22,11 @@ namespace Reporting.Services
 
         private async Task UpdateAsync(string json, string statisticsName)
         {
-            var filePath = _hostingEnvironment.WebRootPath + $@"\Resources\JsonDataSources\{statisticsName}.json";
+            var filePath = Path.Combine(
+                _hostingEnvironment.WebRootPath,
+                "Resources",
+                "JsonDataSources",
+                $"{statisticsName}.json");
 
             await File.WriteAllTextAsync(filePath, json);
         }
