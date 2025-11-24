@@ -3,28 +3,27 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>OMSBlazor</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\modules\StripeModule\src\StripeModule.Application\StripeModule.Application.csproj" />
     <ProjectReference Include="..\OMSBlazor.Domain\OMSBlazor.Domain.csproj" />
     <ProjectReference Include="..\OMSBlazor.Application.Contracts\OMSBlazor.Application.Contracts.csproj" />
     <ProjectReference Include="..\OMSBlazor.NotificationSender\OMSBlazor.NotificationSender.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="7.3.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.1" />
-    <PackageReference Include="QuestPDF" Version="2023.12.6" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" />
-    <PackageReference Include="Volo.Abp.Account.Application" Version="8.0.1" />
-    <PackageReference Include="Volo.Abp.Identity.Application" Version="8.0.1" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="8.0.1" />
-    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="8.0.1" />
-    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="8.0.1" />
-    <PackageReference Include="Volo.Abp.SettingManagement.Application" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.1" />
+    <PackageReference Include="QuestPDF" Version="2024.12.3" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="9.0.4" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="9.0.4" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="9.0.4" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="9.0.4" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="9.0.4" />
+    <PackageReference Include="Volo.Abp.SettingManagement.Application" Version="9.0.4" />
   </ItemGroup>
 
 </Project>

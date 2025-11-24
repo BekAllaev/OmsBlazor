@@ -9,7 +9,7 @@ using Volo.Abp.MultiTenancy;
 
 namespace OMSBlazor.Northwind.OrderAggregate
 {
-    public class Order : AggregateRoot<int>, IMultiTenant
+    public class Order : BasicAggregateRoot<int>, IMultiTenant
     {
         private Order() { }
 
@@ -49,7 +49,19 @@ namespace OMSBlazor.Northwind.OrderAggregate
 
         public virtual List<OrderDetail> OrderDetails { get; private set; } = new List<OrderDetail>();
 
+        public Guid? PaymentId { get; private set; }
+
         public Guid? TenantId { get; set; }
+
+        public void SetPaymentId(Guid paymentId)
+        {
+            if (PaymentId is not null)
+            {
+                throw new OrderPaidException();
+            }
+
+            PaymentId = paymentId;
+        }
 
         public void AddOrderDetail(int productId, int quantity, double unitPrice, float discount)
         {

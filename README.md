@@ -7,7 +7,7 @@ In order to start application you should start `HttpApi.Host` project first, the
 In order to log in to the system use this default credentials: Login - **admin**, password - **1q2w3E***
 
 ------------------------
-<b>1. Switch to EF Core SQLite Provider:</b>  
+<b>1. Switch to EF Core SQLite Provider:</b>   
 https://docs.abp.io/en/abp/latest/Entity-Framework-Core-SQLite
 > For SQLite connection string use this pattern: "Filename=./MyDatabaseName.db",
 this pattern will create databases in `bin` folder of the project where migrations are executed
@@ -134,4 +134,12 @@ public class OMSBlazorHttpApiHostModule : AbpModule
 ```
 
 # Deploy notes
-- When publicating newer version of backend you can have 403 error after the publication. In the Web Application Firewall(you will find it on the dashboard) change Web application firewall mode to Detection only
+- When publicating newer version of backend you can have 403 error after the publication. 
+- In the Web Application Firewall(you will find it on the dashboard) change Web application firewall mode to Detection only
+
+
+### Adaptive Web Hosting wasn't able to find appsettings.json
+During last couple of days (this note is created on 02.05.2025) we struggled with problem that our hosting server - Adaptive Web Host
+was not able to find `appsettings.json` file of `OMSBlazor.Client` project. Even though this file was on the server. The reason of this problem was that we don't included `appsettings.json` file into publish folder.
+We did this because we did want to update this file every time and exactly this was causing the problem, once we start to include this file into publish folder, hosting server starts to work without errors.
+No explanation for this yet but taking note of this, since this may help in future troubleshooting.

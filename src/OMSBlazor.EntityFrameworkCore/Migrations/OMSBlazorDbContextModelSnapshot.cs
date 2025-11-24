@@ -179,6 +179,9 @@ namespace OMSBlazor.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("PaymentId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("RequiredDate")
                         .HasColumnType("TEXT");
 
@@ -474,6 +477,25 @@ namespace OMSBlazor.Migrations
                         .IsUnique();
 
                     b.ToTable("Summaries");
+                });
+
+            modelBuilder.Entity("StripeModule.Payment.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Volo.Abp.BackgroundJobs.BackgroundJobRecord", b =>

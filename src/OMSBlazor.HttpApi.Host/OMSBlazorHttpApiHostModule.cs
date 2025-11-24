@@ -34,6 +34,7 @@ using Volo.Abp.OpenIddict;
 using Volo.Abp.AspNetCore.SignalR;
 using OMSBlazor.NotificationSender;
 using Volo.Abp.MultiTenancy;
+using StripeModule;
 
 namespace OMSBlazor;
 
@@ -144,6 +145,7 @@ public class OMSBlazorHttpApiHostModule : AbpModule
                 options.FileSets.ReplaceEmbeddedByPhysical<OMSBlazorApplicationModule>(
                     Path.Combine(hostingEnvironment.ContentRootPath,
                         $"..{Path.DirectorySeparatorChar}OMSBlazor.Application"));
+                
             });
         }
     }
@@ -153,6 +155,7 @@ public class OMSBlazorHttpApiHostModule : AbpModule
         Configure<AbpAspNetCoreMvcOptions>(options =>
         {
             options.ConventionalControllers.Create(typeof(OMSBlazorApplicationModule).Assembly);
+            options.ConventionalControllers.Create(typeof(StripeModuleApplicationModule).Assembly);
         });
     }
 
@@ -211,6 +214,7 @@ public class OMSBlazorHttpApiHostModule : AbpModule
         //}
 
         app.UseCorrelationId();
+        app.MapAbpStaticAssets();
         app.UseStaticFiles();
         app.UseRouting();
         app.UseCors();

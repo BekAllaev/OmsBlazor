@@ -21,17 +21,9 @@ namespace OMSBlazor.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-            // https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/configuration?view=aspnetcore-8.0#app-settings-configuration
-            var http = new HttpClient() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+            var backendUrl = builder.Configuration["BackendUrl"];
 
-            builder.Services.AddScoped(sp => http);
-
-            using var response = await http.GetAsync("appsettings.json");
-            using var stream = await response.Content.ReadAsStreamAsync();
-
-            builder.Configuration.AddJsonStream(stream);
-
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["BackendUrl"]) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(backendUrl ?? throw new ArgumentNullException(nameof(backendUrl))) });
             builder.Services.AddMudServices();
 
             builder.Services.AddAuthorizationCore();

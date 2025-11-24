@@ -47,6 +47,11 @@ namespace OMSBlazor.Client.Pages.Dashboard.OrderStastics
                         Horizontal = true
                     }
                 },
+                Grid = new Grid
+                {
+                    Show = true,
+                    BorderColor = "transparent"
+                },
                 Theme = theme
             };
 

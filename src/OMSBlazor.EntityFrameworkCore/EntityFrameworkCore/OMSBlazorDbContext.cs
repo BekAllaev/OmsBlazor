@@ -2,6 +2,8 @@
 using OMSBlazor.HostModels;
 using OMSBlazor.Northwind.OrderAggregate;
 using OMSBlazor.Northwind.Stastics;
+using StripeModule.EntityFrameworkCore;
+using StripeModule.Payment;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -39,6 +41,8 @@ public class OMSBlazorDbContext :
     public DbSet<OrderDetail> OrderDetails { get; set; }
 
     public DbSet<CustomerDemographics> CustomerDemographics { get; set; }
+
+    public DbSet<Payment> Payments { get; set; }
 
     #region Stastics
     public DbSet<CustomersByCountry> CustomersByCountries { get; set; }
@@ -123,11 +127,7 @@ public class OMSBlazorDbContext :
         builder.Entity<Employee>()
             .Property(x => x.Id)
             .HasColumnName("EmployeeId");
-
-        builder.Entity<Order>()
-            .Ignore(x => x.ConcurrencyStamp)
-            .Ignore(x => x.ExtraProperties);
-
+;
         builder.Entity<CustomersByCountry>()
             .HasKey(x => x.Id);
         builder.Entity<CustomersByCountry>()
@@ -175,5 +175,7 @@ public class OMSBlazorDbContext :
         builder.Entity<Summary>()
             .HasIndex(x => new { x.Key, x.TenantId })
             .IsUnique();
+
+        builder.ConfigureStripeModule();
     }
 }

@@ -1,0 +1,65 @@
+[
+  {
+    "points": [
+      {
+        "Quarter": "I",
+        "Orders": 120
+      },
+      {
+        "Quarter": "II",
+        "Orders": 150
+      },
+      {
+        "Quarter": "III",
+        "Orders": 130
+      },
+      {
+        "Quarter": "IV",
+        "Orders": 170
+      }
+    ],
+    "Region": "Americas"
+  },
+  {
+    "points": [
+      {
+        "Quarter": "I",
+        "Orders": 95
+      },
+      {
+        "Quarter": "II",
+        "Orders": 110
+      },
+      {
+        "Quarter": "III",
+        "Orders": 105
+      },
+      {
+        "Quarter": "IV",
+        "Orders": 125
+      }
+    ],
+    "Region": "Europe"
+  },
+  {
+    "points": [
+      {
+        "Quarter": "I",
+        "Orders": 80
+      },
+      {
+        "Quarter": "II",
+        "Orders": 90
+      },
+      {
+        "Quarter": "III",
+        "Orders": 100
+      },
+      {
+        "Quarter": "IV",
+        "Orders": 115
+      }
+    ],
+    "Region": "Asia"
+  }
+]

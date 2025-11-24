@@ -44,6 +44,7 @@ namespace OMSBlazor.Client.Pages.Dashboard.OrderStastics
 
             _salesByCountriesSource.Connect()
                 .Sort(SortExpressionComparer<SalesByCountryDto>.Descending(x => x.Sales))
+                .Top(10)
                 .Bind(out _salesByCountries)
                 .Subscribe();
 

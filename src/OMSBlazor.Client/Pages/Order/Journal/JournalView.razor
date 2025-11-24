@@ -8,95 +8,74 @@
 <div class="d-flex flex-column justify-center">
     @if (!ViewModel.Orders.Any())
     {
-        <MudProgressCircular Class="align-self-center" Color="MudBlazor.Color.Primary" Size="MudBlazor.Size.Large" Indeterminate="true" />
+        <MudProgressCircular Class="align-self-center" Color="MudBlazor.Color.Primary" Size="MudBlazor.Size.Large"
+            Indeterminate="true" />
     }
     else
     {
-        @* This grid contain "show invoice" button and thus it is hidden on small screens(smartphones) *@
-        <div class="d-none d-sm-flex justify-center align-center">
-            <MudDataGrid T="SelectableOrderDto" Dense="true" Elevation="3" RowsPerPage="25" RowClass="cursor-pointer" RowClick="e=>ChangeSelectedOrder(e.Item.SourceOrderDto.OrderId)" Style="width:100%" Items="@ViewModel.Orders" RowStyleFunc="RowStyleFunc" Hover="true" Striped="true" Bordered="true">
-                <ColGroup>
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                    <col style="width: 100%" />
-                </ColGroup>
-                <Columns>
-                    <PropertyColumn Property="x => x.SourceOrderDto.OrderId" Title="Id" Sortable="false" />
-                    <TemplateColumn Title="Customer" CellClass="cell-style">
-                        <CellTemplate>
-                            <MudText>
-                                @ViewModel.Customers.Single(x => x.CustomerId == context.Item.SourceOrderDto.CustomerId).CompanyName
-                            </MudText>
-                        </CellTemplate>
-                    </TemplateColumn>
-                    <TemplateColumn Title="Employee" CellClass="cell-style">
-                        <CellTemplate>
-                            <MudText>
-                                @ViewModel.Employees.Single(x => x.EmployeeId == context.Item.SourceOrderDto.EmployeeId).FirstName @ViewModel.Employees.Single(x => x.EmployeeId == context.Item.SourceOrderDto.EmployeeId).LastName
-                            </MudText>
-                        </CellTemplate>
-                    </TemplateColumn>
-                    <PropertyColumn Property="x => x.SourceOrderDto.OrderDate" Format="dd/MM/yyyy" Title="Order date" HeaderClass="cell-style" />
-                    <PropertyColumn Property="x=>x.SourceOrderDto.ShipName" Title="Ship name" CellClass="cell-style" />
-                    <PropertyColumn Property="x=>x.SourceOrderDto.ShipCity" Title="Ship city" HeaderClass="cell-style" />
-                    <PropertyColumn Property="x=>x.SourceOrderDto.ShipCountry" Title="Ship country" HeaderClass="cell-style" />
-                    <TemplateColumn CellClass="d-flex justify-center">
-                        <CellTemplate>
-                            <MudButton Size="@MudBlazor.Size.Small" Variant="@Variant.Filled" Color="@MudBlazor.Color.Primary" OnClick="()=>ShowInvoice(context.Item.SourceOrderDto.OrderId)">Show invoice</MudButton>
-                        </CellTemplate>
-                    </TemplateColumn>
-                </Columns>
-                <PagerContent>
-                    <MudDataGridPager T="SelectableOrderDto" />
-                </PagerContent>
-            </MudDataGrid>
+        @* This grid contain "show invoice" button and thus it is hidden on small screens(smartphones) but its visible on tablets *@
+        <div class="d-none d-sm-flex d-md-none flex-column">
+            <JournalGridComponent Device="Device.Tablet" 
+                Orders="@ViewModel.Orders" 
+                Customers="@ViewModel.Customers" 
+                Employees="@ViewModel.Employees"
+                OnPayClicked="e => NavigateToCheckoutPage(e)"
+                OnRowClicked="e => ChangeSelectedOrder(e)"
+                OnShowInvoiceClicked="e => ShowInvoice(e)"/>
+        </div>
+
+        @* This grid contain "show invoice" button and thus it is hidden on small screens(smartphones) but its visible on laptops *@
+        <div class="d-none d-lg-flex d-xl-none justify-center align-center flex-column">
+            <JournalGridComponent Device="Device.Laptop" 
+                Orders="@ViewModel.Orders" 
+                Customers="@ViewModel.Customers" 
+                Employees="@ViewModel.Employees"
+                OnPayClicked="e => NavigateToCheckoutPage(e)"
+                OnRowClicked="e => ChangeSelectedOrder(e)"
+                OnShowInvoiceClicked="e => ShowInvoice(e)"/>
+        </div>
+
+        @* This grid contain "show invoice" button and thus it is hidden on small screens(smartphones) but its visible on desktop(extra large screens) *@
+        <div class="d-none d-xl-flex d-xxl-none">
+            <JournalGridComponent Device="Device.Desktop" 
+                Orders="@ViewModel.Orders" 
+                Customers="@ViewModel.Customers" 
+                Employees="@ViewModel.Employees"
+                OnPayClicked="e => NavigateToCheckoutPage(e)"
+                OnRowClicked="e => ChangeSelectedOrder(e)"
+                OnShowInvoiceClicked="e => ShowInvoice(e)"/>
+        </div>
+
+        @* This grid contain "show invoice" button and thus it is hidden on small screens(smartphones) but its visible on medium size laptops *@
+        <div class="d-none d-md-flex d-lg-none flex-column">
+            <JournalGridComponent Device="Device.MediumLaptop" 
+                Orders="@ViewModel.Orders" 
+                Customers="@ViewModel.Customers" 
+                Employees="@ViewModel.Employees"
+                OnPayClicked="e => NavigateToCheckoutPage(e)"
+                OnRowClicked="e => ChangeSelectedOrder(e)"
+                OnShowInvoiceClicked="e => ShowInvoice(e)"/>
         </div>
 
         @* This grid does not contain "show invoice" button and thus it is showen on small screens (smartphones)*@
         <div class="d-flex d-sm-none">
-            <MudDataGrid T="SelectableOrderDto" Items="@ViewModel.Orders" RowStyleFunc="RowStyleFunc" Hover="true" Striped="true" Bordered="true">
-                <Columns>
-                    <PropertyColumn Property="x => x.SourceOrderDto.OrderId" Title="Id" Class="" />
-                    <TemplateColumn Title="Customer">
-                        <CellTemplate>
-                            <MudText>
-                                @ViewModel.Customers.Single(x => x.CustomerId == context.Item.SourceOrderDto.CustomerId).CompanyName
-                            </MudText>
-                        </CellTemplate>
-                    </TemplateColumn>
-                    <TemplateColumn Title="Employee">
-                        <CellTemplate>
-                            <MudText>
-                                @ViewModel.Employees.Single(x => x.EmployeeId == context.Item.SourceOrderDto.EmployeeId).FirstName @ViewModel.Employees.Single(x => x.EmployeeId == context.Item.SourceOrderDto.EmployeeId).LastName
-                            </MudText>
-                        </CellTemplate>
-                    </TemplateColumn>
-                    <PropertyColumn Property="x => x.SourceOrderDto.OrderDate" Format="dd/MM/yyyy" Title="Order date" />
-                </Columns>
-                <PagerContent>
-                    <MudDataGridPager T="SelectableOrderDto" />
-                </PagerContent>
-            </MudDataGrid>
+            <JournalGridComponent Device="Device.Smartphone" 
+                Orders="@ViewModel.Orders" 
+                Customers="@ViewModel.Customers" 
+                Employees="@ViewModel.Employees"
+                OnPayClicked="e => NavigateToCheckoutPage(e)"/>
         </div>
     }
 </div>
 
-<style>
-    .cell-style {
-        overflow-x: hidden;
-        white-space: nowrap;
-    }
-</style>
-
 @code {
+    [CascadingParameter(Name = "IsDarkMode")]
+    public bool IsDarkMode { get; set; }
+
     IDisposable registerLocationChangingHanlderDisposable = default!;
 
     private bool invoicePresent;
+    private bool isColumnVisible = false;
 
     protected override void Dispose(bool disposing)
     {
@@ -118,14 +97,20 @@
         }
         base.OnAfterRender(firstRender);
     }
+    public async Task NavigateToCheckoutPage(int orderId)
+    {
+        var checkoutUrl = await ViewModel?.GetCheckoutUrl(orderId, NavigationManager.BaseUri.TrimEnd('/'));
+
+        NavigationManager.NavigateTo(checkoutUrl);
+    }
 
     public async Task ShowInvoice(int orderId)
     {
         var arr = await ViewModel.ChangeSelectedOrderCommand.Execute(orderId);
         var parameters = new DialogParameters<InvoiceDialog>()
-        {
-            { x=>x.InvoiceData, arr }
-        };
+{
+{ x=>x.InvoiceData, arr }
+};
         var options = new DialogOptions { NoHeader = true, BackdropClick = false };
         invoicePresent = true;
         var dialog = DialogService.Show<InvoiceDialog>("Invoice", parameters, options);
@@ -138,17 +123,5 @@
     private async Task ChangeSelectedOrder(int orderId)
     {
         await ViewModel.ChangeSelectedOrderCommand.Execute(orderId);
-    }
-
-    private string RowStyleFunc(SelectableOrderDto selectableOrder, int index)
-    {
-        if (selectableOrder.IsSelcted)
-        {
-            return $"background-color: {MudBlazor.Colors.DeepOrange.Lighten1}";
-        }
-        else
-        {
-            return string.Empty;
-        }
     }
 }
