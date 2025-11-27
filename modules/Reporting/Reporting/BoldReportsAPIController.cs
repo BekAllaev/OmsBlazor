@@ -46,7 +46,8 @@ public class BoldReportsAPIController : Controller, IReportController
     {
         string basePath = _hostingEnvironment.WebRootPath;
         // Here, we have loaded the sales-order-detail.rdl report from the application folder wwwrootResources. sales-order-detail.rdl should be located in the wwwroot\Resources application folder.
-        System.IO.FileStream inputStream = new System.IO.FileStream(basePath + @"\Resources\" + reportOption.ReportModel.ReportPath + ".rdl", System.IO.FileMode.Open, System.IO.FileAccess.Read);
+        var path = Path.Combine(basePath, "Resources", reportOption.ReportModel.ReportPath + ".rdl");
+        System.IO.FileStream inputStream = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read);
         MemoryStream reportStream = new MemoryStream();
         inputStream.CopyTo(reportStream);
         reportStream.Position = 0;
