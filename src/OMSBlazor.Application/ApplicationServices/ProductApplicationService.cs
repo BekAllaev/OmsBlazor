@@ -21,17 +21,15 @@ namespace OMSBlazor.Application.ApplicationServices
         private readonly IReadOnlyRepository<Product, int> _productReadOnlyRepository; // AsNoTracking behind the scenes for Get requests 
         private readonly IRepository<ProductsByCategory, int> _productsByCategoryRepository;
         private readonly IProductManager _productManager;
-        private readonly IDistributedCache<List<Product>> _productCache; // added InMemory cache for products
+        private readonly IDistributedCache<List<ProductDto>> _productCache; // added InMemory cache for products
 
         public ProductApplicationService(
             IRepository<Product, int> productRepository,
-            IReadOnlyRepository<Product, int> productReadOnlyRepository,
             IProductManager productManager,
             IRepository<ProductsByCategory, int> productsByCategoryRepository,
-            IDistributedCache<List<Product>> productCache)
+            IDistributedCache<List<ProductDto>> productCache)
         {
             _productRepository = productRepository;
-            _productReadOnlyRepository = productReadOnlyRepository;
             _productManager = productManager;
             _productsByCategoryRepository = productsByCategoryRepository;
             _productCache = productCache;
@@ -45,7 +43,7 @@ namespace OMSBlazor.Application.ApplicationServices
                 async () => 
                 {
                     var list = await _productReadOnlyRepository.ToListAsync();
-                    return list;
+                    return ObjectMapper.Map<List<Product>, List<ProductDto>>(list);
                 },
                 () => new DistributedCacheEntryOptions
                 {
@@ -58,8 +56,8 @@ namespace OMSBlazor.Application.ApplicationServices
             {
                 throw new Exception(OMSBlazorDomainErrorCodes.ProductListIsNull);
             }
-
-            return ObjectMapper.Map<List<Product>, List<ProductDto>>(products);
+            
+            return products;
         }
 
         public async Task<ProductDto> GetProductAsync(int id)
