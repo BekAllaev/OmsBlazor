@@ -25,12 +25,14 @@ namespace OMSBlazor.Application.ApplicationServices
 
         public ProductApplicationService(
             IRepository<Product, int> productRepository,
+            IReadOnlyRepository<Product, int> productReadOnlyRepository,
             IProductManager productManager,
             IRepository<ProductsByCategory, int> productsByCategoryRepository,
             IDistributedCache<List<ProductDto>> productCache)
         {
             _productRepository = productRepository;
             _productManager = productManager;
+            _productReadOnlyRepository = productReadOnlyRepository;
             _productsByCategoryRepository = productsByCategoryRepository;
             _productCache = productCache;
         }
