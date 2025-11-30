@@ -71,6 +71,15 @@ public class OMSBlazorEntityFrameworkCoreTestModule : AbpModule
             context.GetService<IRelationalDatabaseCreator>().CreateTables();
         }
 
+        var identityOptions = new DbContextOptionsBuilder<OMSBlazorIdentityDbContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        using (var identityContext = new OMSBlazorIdentityDbContext(identityOptions))
+        {
+            identityContext.GetService<IRelationalDatabaseCreator>().CreateTables();
+        }
+
         return connection;
     }
 }
