@@ -24,10 +24,10 @@ jobs:
         run: dotnet restore src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj
 
       - name: Build backend
-        run: dotnet build src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Release --no-restore
+        run: dotnet build src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Staging --no-restore
 
       - name: Publish backend
-        run: dotnet publish src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Release --output ./backend-publish --no-build
+        run: dotnet publish src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Staging --output ./backend-publish --no-build
 
       - name: Create backend deployment package
         run: |
@@ -67,10 +67,10 @@ jobs:
         run: dotnet restore src/OMSBlazor/OMSBlazor.csproj
 
       - name: Build frontend
-        run: dotnet build src/OMSBlazor/OMSBlazor.csproj --configuration Release --no-restore
+        run: dotnet build src/OMSBlazor/OMSBlazor.csproj --configuration Staging --no-restore
 
       - name: Publish frontend
-        run: dotnet publish src/OMSBlazor/OMSBlazor.csproj --configuration Release --output ./frontend-publish --no-build
+        run: dotnet publish src/OMSBlazor/OMSBlazor.csproj --configuration Staging --output ./frontend-publish --no-build
 
       - name: Create frontend deployment package
         run: |
