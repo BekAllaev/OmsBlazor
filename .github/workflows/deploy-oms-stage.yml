@@ -1,8 +1,8 @@
-name: Deploy OMSBlazor backend & frontend to Azure (Linux)
+name: Deploy OMSBlazor backend & frontend to Azure Stage (Linux)
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "dev" ]
   workflow_dispatch:
 
 jobs:
@@ -22,10 +22,10 @@ jobs:
         run: dotnet restore src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj
 
       - name: Build backend
-        run: dotnet build src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Release --no-restore
+        run: dotnet build src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Staging --no-restore
 
       - name: Publish backend
-        run: dotnet publish src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Release --output ./backend-publish --no-build
+        run: dotnet publish src/OMSBlazor.HttpApi.Host/OMSBlazor.HttpApi.Host.csproj --configuration Staging --output ./backend-publish --no-build
 
       - name: Create backend deployment package
         run: |
@@ -41,7 +41,7 @@ jobs:
       - name: Deploy backend to Azure WebApp (Linux)
         run: |
           az webapp deploy \
-            --name ${{ secrets.AZURE_BACKEND_NAME }} \
+            --name ${{ secrets.AZURE_BACKEND_STAGE_NAME }} \
             --resource-group oms \
             --src-path "backend-app.zip" \
             --type zip
@@ -63,10 +63,10 @@ jobs:
         run: dotnet restore src/OMSBlazor/OMSBlazor.csproj
 
       - name: Build frontend
-        run: dotnet build src/OMSBlazor/OMSBlazor.csproj --configuration Release --no-restore
+        run: dotnet build src/OMSBlazor/OMSBlazor.csproj --configuration Staging --no-restore
 
       - name: Publish frontend
-        run: dotnet publish src/OMSBlazor/OMSBlazor.csproj --configuration Release --output ./frontend-publish --no-build
+        run: dotnet publish src/OMSBlazor/OMSBlazor.csproj --configuration Staging --output ./frontend-publish --no-build
 
       - name: Create frontend deployment package
         run: |
@@ -82,7 +82,7 @@ jobs:
       - name: Deploy frontend to Azure WebApp (Linux)
         run: |
           az webapp deploy \
-            --name ${{ secrets.AZURE_FRONT_NAME }} \
+            --name ${{ secrets.AZURE_FRONT_STAGE_NAME }} \
             --resource-group oms \
             --src-path "frontend-app.zip" \
             --type zip
