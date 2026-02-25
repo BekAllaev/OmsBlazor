@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebSockets;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MudBlazor.Services;
 using OMSBlazor.Client.Constants;
 using OMSBlazor.Client.Pages.Dashboard.CustomerStastics;
@@ -33,10 +34,21 @@ namespace OMSBlazor
 
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddHttpClient(Constants.BaseHttpClientTitel, x =>
+            builder.Services.AddHttpClient(Options.DefaultName, (sp, client) =>
             {
-                x.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? throw new NullReferenceException());
+                var configuration = sp.GetRequiredService<IConfiguration>();
+                var backendUrl = configuration["BackendUrl"]
+                    ?? throw new InvalidOperationException("BackendUrl configuration is missing.");
+
+                client.BaseAddress = new Uri(backendUrl);
             });
+
+            builder.Services.AddScoped(sp =>
+            {
+                var factory = sp.GetRequiredService<IHttpClientFactory>();
+                return factory.CreateClient(Options.DefaultName);
+            });
+
             // Add MudBlazor services
             builder.Services.AddMudServices();
 
@@ -82,31 +94,6 @@ namespace OMSBlazor
             builder.Services.AddScoped<CreateViewModel>();
             builder.Services.AddSingleton<IJsonDataSourceUpdater, JsonDataSourceUpdater>();
             builder.Services.AddHostedService<JsonReportDataSourceSeeder>();
-
-            builder.Services.AddHttpClient<CreateViewModel>(x =>
-            {
-                x.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? throw new NullReferenceException());
-            });
-            builder.Services.AddHttpClient<JournalViewModel>(x =>
-            {
-                x.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? throw new NullReferenceException());
-            });
-            builder.Services.AddHttpClient<CustomerStasticsViewModel>(x=>
-            {
-                x.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? throw new NullReferenceException());
-            });
-            builder.Services.AddHttpClient<EmployeeStasticsViewModel>(x =>
-            {
-                x.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? throw new NullReferenceException());
-            });
-            builder.Services.AddHttpClient<OrderStasticsViewModel>(x =>
-            {
-                x.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? throw new NullReferenceException());
-            });
-            builder.Services.AddHttpClient<ProductStasticsViewModel>(x =>
-            {
-                x.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? throw new NullReferenceException());
-            });
 
             builder.AddBlazorCookies();
 

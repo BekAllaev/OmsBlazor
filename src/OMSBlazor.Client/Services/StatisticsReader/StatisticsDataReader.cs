@@ -1,4 +1,5 @@
-﻿using OMSBlazor.Client.Constants;
+﻿using Microsoft.Extensions.Options;
+using OMSBlazor.Client.Constants;
 using OMSBlazor.Dto.Order.Stastics;
 using System.Net.Http;
 using System.Text.Json;
@@ -11,7 +12,7 @@ namespace OMSBlazor.Client.Services.StatisticsReader
 
         public StatisticsDataReader(IHttpClientFactory httpClientFactory)
         {
-            httpClient = httpClientFactory.CreateClient(Constants.Constants.BaseHttpClientTitel);
+            httpClient = httpClientFactory.CreateClient(Options.DefaultName);
         }
 
         public async Task<Dictionary<string, string>> GetData()

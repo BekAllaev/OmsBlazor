@@ -21,9 +21,24 @@ namespace OMSBlazor.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-            var backendUrl = builder.Configuration["BackendUrl"];
+            builder.Services.AddHttpClient("Backend", (sp, client) =>
+            {
+                var url = builder.Configuration["BackendUrl"];
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(backendUrl ?? throw new ArgumentNullException(nameof(backendUrl))) });
+                if (string.IsNullOrEmpty(url))
+                {
+                    throw new InvalidOperationException("BackendUrl configuration is missing.");
+                }
+
+                client.BaseAddress = new Uri(url);
+            });
+
+            builder.Services.AddScoped(sp =>
+            {
+                var factory = sp.GetRequiredService<IHttpClientFactory>();
+                return factory.CreateClient("Backend");
+            });
+
             builder.Services.AddMudServices();
 
             builder.Services.AddAuthorizationCore();
