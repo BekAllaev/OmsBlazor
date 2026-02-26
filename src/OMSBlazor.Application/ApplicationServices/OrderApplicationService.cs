@@ -78,7 +78,7 @@ namespace OMSBlazor.Application.ApplicationServices
             order.ShipAddress = createOrderDto.ShipAddress;
             order.ShipPostalCode = createOrderDto.ShipPostalCode;
 
-            await _orderRepository.InsertAsync(order, autoSave: true);
+            await _orderRepository.InsertAsync(order);
 
             var orderDto = ObjectMapper.Map<Order, OrderDto>(order);
 
