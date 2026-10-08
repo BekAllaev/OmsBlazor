@@ -1,3 +1,6 @@
 ﻿@page "/report"
 
-<Report ReportName="Annual report"/>
+@if (IsServerSide)
+{
+    <Report ReportName="Annual report"/>
+}
