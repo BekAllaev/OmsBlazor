@@ -31,6 +31,8 @@ namespace OMSBlazor.Client.Pages.Report
             this.statisticsDataReader = serviceProvider.GetService<IStatisticsDataReader>();
         }
 
+        // TODO: This is definitely workaround. Problem is that this component should be moved
+        // to the project OMSBlazor, where only server rendering components live 
         private bool IsServerSide => jsonDataSourceUpdater is not null && statisticsDataReader is not null;
 
         protected override void OnInitialized()
