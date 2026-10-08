@@ -1,6 +1,7 @@
 ﻿using BoldReports.Data.WebData;
 using BoldReports.Web;
 using BoldReports.Web.ReportViewer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -13,6 +14,8 @@ using System.Threading.Tasks;
 
 namespace Reporting;
 
+// The report page is available only to signed-in users, so is the API that renders the report for it
+[Authorize]
 [Route("api/{controller}/{action}/{id?}")]
 public class BoldReportsAPIController : Controller, IReportController
 {
