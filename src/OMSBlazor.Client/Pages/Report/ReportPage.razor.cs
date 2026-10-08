@@ -10,7 +10,7 @@ using System.Net.Http;
 
 namespace OMSBlazor.Client.Pages.Report
 {
-    public partial class ReportPage
+    public partial class ReportPage : IDisposable
     {
         private readonly NavigationManager navigationManager;
         private readonly IHubConnectionsService hubConnectionsService;
@@ -18,7 +18,7 @@ namespace OMSBlazor.Client.Pages.Report
         private readonly IJsonDataSourceUpdater? jsonDataSourceUpdater;
         private readonly IStatisticsDataReader? statisticsDataReader;
 
-        private bool _subscribed;
+        private IDisposable? _updateDashboardSubscription;
 
         public ReportPage(
             NavigationManager navigationManager, 
@@ -48,19 +48,21 @@ namespace OMSBlazor.Client.Pages.Report
         {
             if (!firstRender || !IsServerSide) return;
 
-            if (!_subscribed)
+            if (_updateDashboardSubscription is null)
             {
-                hubConnectionsService.DashboardHubConnection.On("UpdateDashboard", async () =>
+                _updateDashboardSubscription = hubConnectionsService.DashboardHubConnection.On("UpdateDashboard", async () =>
                 {
                     var data = await statisticsDataReader!.GetData();
                     await jsonDataSourceUpdater!.UpdateDataSourceAsync(data);
                     navigationManager.NavigateTo(navigationManager.Uri, true);
                 });
-                _subscribed = true;
             }
 
             if (hubConnectionsService.DashboardHubConnection.State == HubConnectionState.Disconnected)
                 await hubConnectionsService.DashboardHubConnection.StartAsync();
         }
+
+        // The hub connection outlives the page, so remove the handler when the user leaves it
+        public void Dispose() => _updateDashboardSubscription?.Dispose();
     }
 }
