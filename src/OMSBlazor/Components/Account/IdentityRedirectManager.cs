@@ -23,7 +23,7 @@ namespace OMSBlazor.Components.Account
             // Prevent open redirects.
             if (!Uri.IsWellFormedUriString(uri, UriKind.Relative))
             {
-                uri = navigationManager.ToBaseRelativePath(uri);
+                uri = ToLocalRelativePath(uri);
             }
 
             // During static rendering, NavigateTo throws a NavigationException which is handled by the framework as a redirect.
@@ -45,6 +45,26 @@ namespace OMSBlazor.Components.Account
         {
             context.Response.Cookies.Append(StatusCookieName, message, StatusCookieBuilder.Build(context));
             RedirectTo(uri);
+        }
+
+        // ToBaseRelativePath throws when the URI doesn't start with BaseUri. Behind a proxy (Azure App Service)
+        // the server may see the request as http while the browser sends https URLs, so the same-site
+        // returnUrl would crash the login with 500. Compare by host only and drop anything off-site.
+        private string ToLocalRelativePath(string uri)
+        {
+            var baseUri = new Uri(navigationManager.BaseUri);
+
+            if (!Uri.TryCreate(uri, UriKind.Absolute, out var absoluteUri)
+                || !string.Equals(absoluteUri.Host, baseUri.Host, StringComparison.OrdinalIgnoreCase))
+            {
+                return "";
+            }
+
+            var localUri = new UriBuilder(absoluteUri) { Scheme = baseUri.Scheme, Port = baseUri.Port }.Uri.AbsoluteUri;
+
+            return localUri.StartsWith(baseUri.AbsoluteUri, StringComparison.OrdinalIgnoreCase)
+                ? localUri[baseUri.AbsoluteUri.Length..]
+                : "";
         }
 
         private string CurrentPath => navigationManager.ToAbsoluteUri(navigationManager.Uri).GetLeftPart(UriPartial.Path);
