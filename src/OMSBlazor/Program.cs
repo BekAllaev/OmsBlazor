@@ -28,7 +28,7 @@ namespace OMSBlazor
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Bold.Licensing.BoldLicenseProvider.RegisterLicense("gFVmCnZi2bVTJyccaSRxm5thTNY+P9ONI5ME6zQR0p0=");
 
@@ -103,6 +103,9 @@ namespace OMSBlazor
 
             var app = builder.Build();
 
+            // Create Identity tables (apply migrations) and seed the default admin user
+            await app.InitializeIdentityDatabaseAsync();
+
             ReportConfig.DefaultSettings = new ReportSettings().RegisterExtensions(new List<string> {"BoldReports.Data.WebData",
                                                                                         "BoldReports.Data.PostgreSQL",
                                                                                         "BoldReports.Data.Excel",
@@ -142,7 +145,7 @@ namespace OMSBlazor
             
             app.MapControllers();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }
