@@ -28,7 +28,7 @@ namespace OMSBlazor
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Bold.Licensing.BoldLicenseProvider.RegisterLicense("gFVmCnZi2bVTJyccaSRxm5thTNY+P9ONI5ME6zQR0p0=");
 
@@ -103,6 +103,8 @@ namespace OMSBlazor
 
             var app = builder.Build();
 
+            await InitializeIdentityDatabaseAsync(app.Services);
+
             ReportConfig.DefaultSettings = new ReportSettings().RegisterExtensions(new List<string> {"BoldReports.Data.WebData",
                                                                                         "BoldReports.Data.PostgreSQL",
                                                                                         "BoldReports.Data.Excel",
@@ -143,6 +145,37 @@ namespace OMSBlazor
             app.MapControllers();
 
             app.Run();
+        }
+
+        // IdentityDb.sqlite is not published, and a zip deploy removes everything that isn't in the package,
+        // so on Azure the app starts with an empty database: every login failed with 500 ("no such table: AspNetUsers").
+        // Create the schema and the default user suggested on the login page if they are missing
+        private static async Task InitializeIdentityDatabaseAsync(IServiceProvider services)
+        {
+            const string defaultUserEmail = "admin@email.com";
+            const string defaultUserPassword = "1q2w3E*";
+
+            await using var scope = services.CreateAsyncScope();
+
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            await dbContext.Database.MigrateAsync();
+
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            if (await userManager.FindByEmailAsync(defaultUserEmail) is not null) return;
+
+            var defaultUser = new ApplicationUser
+            {
+                UserName = defaultUserEmail,
+                Email = defaultUserEmail,
+                EmailConfirmed = true
+            };
+
+            var result = await userManager.CreateAsync(defaultUser, defaultUserPassword);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException(
+                    $"Failed to create the default user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+            }
         }
     }
 }
