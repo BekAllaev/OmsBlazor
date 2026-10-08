@@ -1,3 +1,8 @@
 ﻿@page "/report"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
-<Report ReportName="Annual report"/>
+@if (IsServerSide)
+{
+    <Report ReportName="Annual report"/>
+}

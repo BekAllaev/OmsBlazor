@@ -83,7 +83,9 @@ namespace OMSBlazor
 
             builder.Services.AddMemoryCache();
 
-            builder.Services.AddSingleton<IHubConnectionsService, HubConnectionsService>();
+            // Scoped, not singleton: on the server each user (circuit) must have own hub connections,
+            // otherwise all users share one ConnectionId and receive each other's messages
+            builder.Services.AddScoped<IHubConnectionsService, HubConnectionsService>();
             builder.Services.AddSingleton<IStatisticsDataReader, StatisticsDataReader>();
 
             builder.Services.AddScoped<CustomerStasticsViewModel>();

@@ -36,6 +36,7 @@ namespace OMSBlazor.Client.Pages.Order.Create
         private List<ProductDto> productsList;
 
         private readonly IHubConnectionsService _hubConnectionsService;
+        private IDisposable? _updateQuantitySubscription;
         #endregion
 
         public CreateViewModel(HttpClient httpClient, IHubConnectionsService hubConnectionsService)
@@ -218,12 +219,28 @@ namespace OMSBlazor.Client.Pages.Order.Create
             });
         }
 
-        private void RemoveProduct(ProductInOrder productToRemove)
+        private async void RemoveProduct(ProductInOrder productToRemove)
         {
-            if (!productToRemove.IsSaled)
-                productToRemove.SourceProductOnStore.UnitsInStock += productToRemove.SelectedQuantity;
-
             TotalSum -= productToRemove.Sum;
+
+            if (productToRemove.IsSaled) return;
+
+            // Product is returned to the store, so give its units back here and on the other clients
+            productToRemove.SourceProductOnStore.UnitsInStock += productToRemove.SelectedQuantity;
+
+            var product = productsList.First(x => x.ProductId == productToRemove.ProductID);
+            product.UnitsInStock += productToRemove.SelectedQuantity;
+
+            // Negative quantity means that units are returned to the stock
+            await SendUnitsInStockChangeAsync(productToRemove.ProductID, -productToRemove.SelectedQuantity);
+        }
+
+        /// <summary>
+        /// Tells the other clients that <paramref name="quantity"/> units of the product were taken from the stock
+        /// </summary>
+        private async Task SendUnitsInStockChangeAsync(int productId, int quantity)
+        {
+            await _hubConnectionsService.ProductHubConnection.SendAsync("UpdateProductUnitsInStock", _hubConnectionsService.ProductHubConnection.ConnectionId, productId, quantity);
         }
 
         private void SubscribeToChanges(ProductInOrder newProductInOrder)
@@ -289,7 +306,7 @@ namespace OMSBlazor.Client.Pages.Order.Create
                     var product = productsList.First(x => x.ProductId == newProductInOrder.ProductID);
 
                     product.UnitsInStock -= (short)newValue;
-                    await _hubConnectionsService.ProductHubConnection.SendAsync("UpdateProductUnitsInStock", _hubConnectionsService.ProductHubConnection.ConnectionId, newProductInOrder.ProductID, newValue);
+                    await SendUnitsInStockChangeAsync(newProductInOrder.ProductID, newValue);
                 });
         }
         #endregion
@@ -330,10 +347,25 @@ namespace OMSBlazor.Client.Pages.Order.Create
                     customers.AddRange(customerList);
                 }
 
-                _hubConnectionsService.ProductHubConnection.On<int, int>("UpdateQuantity", (productId, quantity) =>
+                // OnNavigatedTo is called on every navigation to the view, so drop the previous handler
+                // instead of adding one more - otherwise each update is applied several times
+                _updateQuantitySubscription?.Dispose();
+                _updateQuantitySubscription = _hubConnectionsService.ProductHubConnection.On<int, int>("UpdateQuantity", (productId, quantity) =>
                 {
-                    var product = ProductsInStore.Single(x => x.ProductID == productId);
-                    product.UnitsInStock -= quantity;
+                    // Look up in the whole cache, not in ProductsInStore: the latter doesn't contain products
+                    // that were out of stock, so units returned to such product would be lost
+                    var product = products.Lookup(productId);
+                    if (!product.HasValue) return;
+
+                    var wasOutOfStock = product.Value.UnitsInStock == 0;
+
+                    product.Value.UnitsInStock -= quantity;
+                    productsList.First(x => x.ProductId == productId).UnitsInStock -= quantity;
+
+                    // The "UnitsInStock != 0" filter is not re-evaluated on property change,
+                    // so refresh the item to show it again in the store
+                    if (wasOutOfStock && product.Value.UnitsInStock > 0)
+                        products.Refresh(product.Value);
                     this.RaisePropertyChanged(nameof(ProductsInStore));
                 });
 

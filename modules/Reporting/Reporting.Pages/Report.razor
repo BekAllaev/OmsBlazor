@@ -14,7 +14,7 @@
     BoldReportViewerOptions viewerOptions = new BoldReportViewerOptions();
 
     // Used to render the Bold Report Viewer component in Blazor page.
-    public async void RenderReportViewer()
+    public async Task RenderReportViewer()
     {
         if (ReportName is null)
         {
@@ -26,8 +26,10 @@
         await JSRuntime.InvokeVoidAsync("BoldReports.RenderViewer", "report-viewer", viewerOptions);
     }
     // Initial rendering of Bold Report Viewer
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        RenderReportViewer();
+        if (!firstRender) return;
+
+        await RenderReportViewer();
     }
 }
