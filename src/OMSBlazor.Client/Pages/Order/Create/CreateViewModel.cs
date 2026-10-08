@@ -36,6 +36,7 @@ namespace OMSBlazor.Client.Pages.Order.Create
         private List<ProductDto> productsList;
 
         private readonly IHubConnectionsService _hubConnectionsService;
+        private IDisposable? _updateQuantitySubscription;
         #endregion
 
         public CreateViewModel(HttpClient httpClient, IHubConnectionsService hubConnectionsService)
@@ -330,7 +331,10 @@ namespace OMSBlazor.Client.Pages.Order.Create
                     customers.AddRange(customerList);
                 }
 
-                _hubConnectionsService.ProductHubConnection.On<int, int>("UpdateQuantity", (productId, quantity) =>
+                // OnNavigatedTo is called on every navigation to the view, so drop the previous handler
+                // instead of adding one more - otherwise each update is applied several times
+                _updateQuantitySubscription?.Dispose();
+                _updateQuantitySubscription = _hubConnectionsService.ProductHubConnection.On<int, int>("UpdateQuantity", (productId, quantity) =>
                 {
                     var product = ProductsInStore.Single(x => x.ProductID == productId);
                     product.UnitsInStock -= quantity;
